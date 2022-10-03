@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ShowTimer from "./ShowTimer";
 
 function SetTimer() {
-  const [date, setDate] = useState("2022-10-04");
+  const [date, setDate] = useState("");
   const [time, setTime] = useState(false);
   const [check, setCheck] = useState(false);
   // const [timeDiff, setTimeDiff] = useState("");
@@ -80,17 +80,17 @@ function SetTimer() {
         className="flex flex-col justify-center items-center gap-5"
         onSubmit={(e) => e.defaultPrevented()}
       >
-        <h2 className="text-3xl">Set The Counter</h2>
+        <h2 className="text-3xl font-bold">Set The Counter</h2>
         {/* Date */}
-        <div className="font-semibold text-2xl text-center">
+        <div className="md:flex justify-center items-center font-semibold text-2xl">
           <label htmlFor="date">
             <p>
-              Select a date <b>:</b>
+              Select a date <b className="mr-2">:</b>
             </p>
           </label>
 
           <input
-            className="py-2 px-4 rounded-md shadow-md bg-slate-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+            className="mt-2 md:mt-0 py-2 px-4 rounded-md shadow-md bg-slate-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
             type="date"
             name=""
             id="date"
@@ -113,7 +113,7 @@ function SetTimer() {
             htmlFor="checkbox"
             className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
           >
-            <span>Do you want to set custom time</span>
+            <span>Do you want to set custom time.</span>
           </label>
         </div>
 
@@ -134,8 +134,13 @@ function SetTimer() {
         <div>
           <button
             type="button"
-            className="text-2xl text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-5 py-2.5 text-center"
+            className={`${
+              date.length === 0
+                ? "bg-blue-900"
+                : "from-blue-500 via-blue-600 to-blue-700"
+            } text-2xl text-white bg-gradient-to-r  hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-5 py-2.5 text-center`}
             onClick={setReminder}
+            disabled={date.length === 0}
           >
             Set Counter
           </button>
