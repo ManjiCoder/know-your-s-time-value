@@ -6,13 +6,14 @@ import {
   Route,
 } from "react-router-dom";
 
-import Counter from './components/Counter';
+import SetTimer from './components/SetTimer';
+
 
 function App() {
   return (
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Counter />}/>
+      <Route path="/" element={<SetTimer />}/>
     </Routes>
   </BrowserRouter>
   );
