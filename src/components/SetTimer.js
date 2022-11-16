@@ -34,7 +34,7 @@ function SetTimer() {
     // console.log(userSelectedDate);
 
     // console.log(time);
-    setDateArr(dateArr.concat(JSON.stringify(userSelectedDate.getTime())));
+    dateArr.unshift(userSelectedDate.getTime());
     localStorage.setItem(
       JSON.stringify(userSelectedDate.getTime()),
       userSelectedDate
@@ -47,9 +47,7 @@ function SetTimer() {
   useEffect(() => {
     for (let i = 0; i < localStorage.length; i++) {
       console.log(localStorage.key(i));
-      dateArr.push(localStorage.key(JSON.parse(i)));
-      // setDateArr(Array.from(new Set(dateArr.push)))
-      // setDateArr(dateArr.concat([localStorage.key(i)]))
+      dateArr.unshift(localStorage.key(JSON.parse(i)));
     }
     setDateArr(Array.from(new Set(dateArr.sort((a, b) => a - b))));
     console.log(dateArr);
