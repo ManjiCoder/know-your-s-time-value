@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import ShowTimer from "./ShowTimer";
+// import ShowTimer from "./ShowTimer";
 
 function SetTimer() {
   const [date, setDate] = useState("");
+  const [todayDate, setTodayDate] = useState("");
+  const [dateArr, setDateArr] = useState([]);
   const [time, setTime] = useState(false);
   const [check, setCheck] = useState(false);
-  // const [timeDiff, setTimeDiff] = useState("");
-  const [hrs, setHrs] = useState("");
-  const [mins, setMins] = useState("");
-  const [secs, setSecs] = useState("");
-  const [days, setDays] = useState("");
+
   // today date to set min attribute in input date
   let today = new Date();
   let dd = (today.getDate() + (check ? 0 : 1)).toString().padStart(2, 0);
@@ -17,7 +15,12 @@ function SetTimer() {
   let yy = today.getFullYear().toString().padStart(2, 0);
   today = `${yy}-${mm}-${dd}`;
 
-  const setReminder = () => {
+  setTimeout(() => {
+    setTodayDate(new Date().getTime());
+    // setTodayDate(new Date().toGMTString())
+  }, 1000);
+
+  const addDate = () => {
     console.log(date);
     let userSelectedDate = new Date(date);
     userSelectedDate.setHours(
@@ -30,49 +33,11 @@ function SetTimer() {
     // console.log(userSelectedDate);
 
     // console.log(time);
-
-    setInterval(() => {
-      let todayDate = new Date();
-      todayDate.getDate().toString().padStart(2, 0);
-      todayDate.getHours().toString().padStart(2, 0);
-      todayDate.getMinutes().toString().padStart(2, 0);
-      todayDate.getSeconds().toString().padStart(2, 0);
-      todayDate = todayDate.getTime();
-      let diff = userSelectedDate - todayDate;
-      // setTimeDiff(diff);
-      // console.log(diff);
-
-      // logic to calculate remaining time
-      setDays(
-        Math.floor(diff / (1000 * 60 * 60 * 24))
-          .toString()
-          .padStart(2, 0)
-      );
-      setHrs(
-        Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-          .toString()
-          .padStart(2, 0)
-      );
-      setMins(
-        Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-          .toString()
-          .padStart(2, 0)
-      );
-      setSecs(
-        Math.floor((diff % (1000 * 60)) / 1000)
-          .toString()
-          .padStart(2, 0)
-      );
-    }, 1000);
-    // setInterval(calculateTime, 1000);
-    /*if (timeDiff > 0) {
-      console.log("big  then 0");
-    }
-    if (timeDiff === 0) {
-      console.log("the time is come get ready to fight");
-    } else {
-      console.log("less then 0");
-    }*/
+    setDateArr(dateArr.concat(userSelectedDate.getTime()));
+    // console.log(dateArr);
+    setDate("");
+    setTime(false)
+    setCheck(false)
   };
   return (
     <div className="bg-blue-100 min-h-[100vh] py-8 px-10">
@@ -139,7 +104,7 @@ function SetTimer() {
                 ? "bg-blue-900"
                 : "from-blue-500 via-blue-600 to-blue-700"
             } text-2xl text-white bg-gradient-to-r  hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-5 py-2.5 text-center`}
-            onClick={setReminder}
+            onClick={addDate}
             disabled={date.length === 0}
           >
             Set Counter
@@ -148,7 +113,66 @@ function SetTimer() {
       </form>
 
       {/* Show Timer */}
-      <ShowTimer days={days} hrs={hrs} mins={mins} secs={secs} />
+      {dateArr.map((date, index) => {
+        return (
+          <div
+            className="my-7 flex flex-col gap-3 items-center"
+            key={index}
+          >
+            <section className="flex gap-2 min-w-[7rem] p-3 text-center  rounded-md shadow-md">
+              <div className="flex flex-col gap-3">
+                <div className="min-w-20 p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
+                  {Math.floor((date - todayDate) / (1000 * 60 * 60 * 24))
+                    .toString()
+                    .padStart(2, 0)}
+                </div>
+                <div className="min-w-20 p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
+                  Days
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <div className="min-w-20 p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
+                  {Math.floor(
+                    ((date - todayDate) % (1000 * 60 * 60 * 24)) /
+                      (1000 * 60 * 60)
+                  )
+                    .toString()
+                    .padStart(2, 0)}
+                </div>
+                <div className="min-w-20 p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
+                  Hrs
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <div className="min-w-20 p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
+                  {Math.floor(
+                    ((date - todayDate) % (1000 * 60 * 60)) / (1000 * 60)
+                  )
+                    .toString()
+                    .padStart(2, 0)}
+                </div>
+                <div className="min-w-20 p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
+                  Min
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <div className="min-w-20 p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
+                  {Math.floor(((date - todayDate) % (1000 * 60)) / 1000)
+                    .toString()
+                    .padStart(2, 0)}
+                </div>
+                <div className="min-w-20 p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
+                  Sec
+                </div>
+              </div>
+            </section>
+          </div>
+        );
+      })}
+      {/* <ShowTimer days={days} hrs={hrs} mins={mins} secs={secs} /> */}
     </div>
   );
 }
