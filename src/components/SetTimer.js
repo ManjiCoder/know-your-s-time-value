@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 // import ShowTimer from "./ShowTimer";
 
 function SetTimer() {
@@ -33,12 +34,28 @@ function SetTimer() {
     // console.log(userSelectedDate);
 
     // console.log(time);
-    setDateArr(dateArr.concat(userSelectedDate.getTime()));
-    // console.log(dateArr);
+    setDateArr(dateArr.concat(JSON.stringify(userSelectedDate.getTime())));
+    localStorage.setItem(
+      JSON.stringify(userSelectedDate.getTime()),
+      userSelectedDate
+    );
+    console.log(dateArr);
     setDate("");
-    setTime(false)
-    setCheck(false)
+    setTime(false);
+    setCheck(false);
   };
+  useEffect(() => {
+    for (let i = 0; i < localStorage.length; i++) {
+      console.log(localStorage.key(i));
+      dateArr.push(localStorage.key(JSON.parse(i)));
+      // setDateArr(Array.from(new Set(dateArr.push)))
+      // setDateArr(dateArr.concat([localStorage.key(i)]))
+    }
+    setDateArr(Array.from(new Set(dateArr.sort((a, b) => a - b))));
+    console.log(dateArr);
+    console.log(localStorage);
+  }, []);
+
   return (
     <div className="bg-blue-100 min-h-[100vh] py-8 px-10">
       <form
@@ -76,7 +93,7 @@ function SetTimer() {
           />
           <label
             htmlFor="checkbox"
-            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            className="ml-2 text-sm font-medium text-gray-900"
           >
             <span>Do you want to set custom time.</span>
           </label>
@@ -115,24 +132,21 @@ function SetTimer() {
       {/* Show Timer */}
       {dateArr.map((date, index) => {
         return (
-          <div
-            className="my-7 flex flex-col gap-3 items-center"
-            key={index}
-          >
+          <div className="my-7 flex flex-col gap-3 items-center" key={index}>
             <section className="flex gap-2 min-w-[7rem] p-3 text-center  rounded-md shadow-md">
               <div className="flex flex-col gap-3">
-                <div className="min-w-20 p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
+                <div className="w-20 md:w-28 max-w-full p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
                   {Math.floor((date - todayDate) / (1000 * 60 * 60 * 24))
                     .toString()
                     .padStart(2, 0)}
                 </div>
-                <div className="min-w-20 p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
+                <div className="w-20 md:w-28 max-w-full p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
                   Days
                 </div>
               </div>
 
               <div className="flex flex-col gap-3">
-                <div className="min-w-20 p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
+                <div className="w-20 md:w-28 max-w-full p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
                   {Math.floor(
                     ((date - todayDate) % (1000 * 60 * 60 * 24)) /
                       (1000 * 60 * 60)
@@ -140,31 +154,31 @@ function SetTimer() {
                     .toString()
                     .padStart(2, 0)}
                 </div>
-                <div className="min-w-20 p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
+                <div className="w-20 md:w-28 max-w-full p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
                   Hrs
                 </div>
               </div>
 
               <div className="flex flex-col gap-3">
-                <div className="min-w-20 p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
+                <div className="w-20 md:w-28 max-w-full p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
                   {Math.floor(
                     ((date - todayDate) % (1000 * 60 * 60)) / (1000 * 60)
                   )
                     .toString()
                     .padStart(2, 0)}
                 </div>
-                <div className="min-w-20 p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
+                <div className="w-20 md:w-28 max-w-full p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
                   Min
                 </div>
               </div>
 
               <div className="flex flex-col gap-3">
-                <div className="min-w-20 p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
+                <div className="w-20 md:w-28 max-w-full p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
                   {Math.floor(((date - todayDate) % (1000 * 60)) / 1000)
                     .toString()
                     .padStart(2, 0)}
                 </div>
-                <div className="min-w-20 p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
+                <div className="w-20 md:w-28 max-w-full p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
                   Sec
                 </div>
               </div>
