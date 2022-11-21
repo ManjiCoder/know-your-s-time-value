@@ -52,10 +52,11 @@ function SetTimer() {
     setDateArr(Array.from(new Set(dateArr.sort((a, b) => a - b))));
     console.log(dateArr);
     console.log(localStorage);
+    // eslint-disable-next-line
   }, []);
 
   return (
-    <div className="bg-blue-100 min-h-[100vh] py-8 px-10">
+    <div className="bg-yellow-400 min-h-[100vh] py-8 px-4">
       <form
         className="flex flex-col justify-center items-center gap-5"
         onSubmit={(e) => e.defaultPrevented()}
@@ -130,61 +131,102 @@ function SetTimer() {
       {/* Show Timer */}
       {dateArr.map((date, index) => {
         return (
-          <div className="my-7 flex flex-col gap-3 items-center" key={index}>
-            <section className="flex gap-2 min-w-[7rem] p-3 text-center  rounded-md shadow-md">
-              <div className="flex flex-col gap-3">
-                <div className="w-20 md:w-28 max-w-full p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
-                  {Math.floor((date - todayDate) / (1000 * 60 * 60 * 24))
-                    .toString()
-                    .padStart(2, 0)}
-                </div>
-                <div className="w-20 md:w-28 max-w-full p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
-                  Days
-                </div>
+          <section
+            key={index}
+            className={`h-36  w-full md:max-w-xl lg:max-w-2xl p-2 flex m-auto ${
+              Math.sign(Math.floor(date - todayDate)) == -1 ? "hidden" : ""
+            }`}
+          >
+            <div className="bg-cyan-800 w-[35%] flex flex-col items-center justify-center rounded-l-lg">
+              <div className="bg-slate-50 w-[70%] rounded-tr-lg rounded-tl-lg h-6 mb-0.5 text-base font-bold grid place-items-center">
+                Days
               </div>
+              <div
+                className={`bg-slate-100 w-[70%] rounded-br-lg rounded-bl-lg h-16 grid place-items-center font-bold text-4xl ${
+                  Math.floor(
+                    (date - todayDate) / (1000 * 60 * 60 * 24)
+                  ).toString() < 1 && "text-red-700"
+                }`}
+              >
+                {Math.floor((date - todayDate) / (1000 * 60 * 60 * 24))
+                  .toString()
+                  .padStart(2, 0)}
+              </div>
+            </div>
 
-              <div className="flex flex-col gap-3">
-                <div className="w-20 md:w-28 max-w-full p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
-                  {Math.floor(
-                    ((date - todayDate) % (1000 * 60 * 60 * 24)) /
-                      (1000 * 60 * 60)
-                  )
-                    .toString()
-                    .padStart(2, 0)}
+            <div className="bg-slate-800 w-[75%] rounded-r-lg flex items-center justify-center text-whitefont-bold text-white flex-col">
+              <div className="flex text-center gap-1">
+                <div>
+                  <div
+                    className={`bg-slate-600 w-20 md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
+                      Math.floor(
+                        ((date - todayDate) % (1000 * 60 * 60 * 24)) /
+                          (1000 * 60 * 60)
+                      ) < 1 && "text-orange-600"
+                    }`}
+                  >
+                    {Math.floor(
+                      ((date - todayDate) % (1000 * 60 * 60 * 24)) /
+                        (1000 * 60 * 60)
+                    )
+                      .toString()
+                      .padStart(2, 0)}
+                  </div>
+                  <div className="w-20 md:w-28 max-w-full rounded-md shadow-md font-semibold">
+                    Hrs
+                  </div>
                 </div>
-                <div className="w-20 md:w-28 max-w-full p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
-                  Hrs
+                <div>
+                  <div
+                    className={`bg-slate-600 w-20 md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
+                      Math.floor(
+                        ((date - todayDate) % (1000 * 60 * 60 * 24)) /
+                          (1000 * 60 * 60)
+                      ) < 1 &&
+                      Math.floor(
+                        ((date - todayDate) % (1000 * 60 * 60)) / (1000 * 60)
+                      ) < 1 &&
+                      "text-orange-600"
+                    }`}
+                  >
+                    {Math.floor(
+                      ((date - todayDate) % (1000 * 60 * 60)) / (1000 * 60)
+                    )
+                      .toString()
+                      .padStart(2, 0)}
+                  </div>
+                  <div className="w-20 md:w-28 max-w-full rounded-md shadow-md font-semibold">
+                    Mins
+                  </div>
+                </div>
+                <div>
+                  <div
+                    className={`bg-slate-600 w-20 md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
+                      Math.floor(
+                        ((date - todayDate) % (1000 * 60 * 60 * 24)) /
+                          (1000 * 60 * 60)
+                      ) < 1 &&
+                      Math.floor(
+                        ((date - todayDate) % (1000 * 60 * 60)) / (1000 * 60)
+                      ) < 1 &&
+                      "text-orange-600"
+                    }`}
+                  >
+                    {Math.floor(((date - todayDate) % (1000 * 60)) / 1000)
+                      .toString()
+                      .padStart(2, 0)}
+                  </div>
+                  <div className="w-20 md:w-28 max-w-full rounded-md shadow-md font-semibold">
+                    Secs
+                  </div>
                 </div>
               </div>
-
-              <div className="flex flex-col gap-3">
-                <div className="w-20 md:w-28 max-w-full p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
-                  {Math.floor(
-                    ((date - todayDate) % (1000 * 60 * 60)) / (1000 * 60)
-                  )
-                    .toString()
-                    .padStart(2, 0)}
-                </div>
-                <div className="w-20 md:w-28 max-w-full p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
-                  Min
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <div className="w-20 md:w-28 max-w-full p-3 text-center bg-white rounded-md shadow-md text-xl font-bold">
-                  {Math.floor(((date - todayDate) % (1000 * 60)) / 1000)
-                    .toString()
-                    .padStart(2, 0)}
-                </div>
-                <div className="w-20 md:w-28 max-w-full p-3 bg-slate-100 rounded-md shadow-md text-xl font-semibold">
-                  Sec
-                </div>
-              </div>
-            </section>
-          </div>
+              <div className="text-xs mt-2">{localStorage.getItem(date)}</div>
+            </div>
+          </section>
         );
       })}
-      {/* <ShowTimer days={days} hrs={hrs} mins={mins} secs={secs} /> */}
+      {/* <ShowTimer /> */}
     </div>
   );
 }

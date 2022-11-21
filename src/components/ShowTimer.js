@@ -1,39 +1,46 @@
 import React from "react";
 
-function ShowTimer(props) {
-  const { days, hrs, mins, secs } = props;
+function ShowTimer() {
   return (
-    <div className="my-7 flex flex-col gap-3 items-center  text-4xl font-semibold">
-      <section
-        className={`${days === "00" || days === "" ? "hidden" : "flex"} gap-2`}
-      >
-        <div className="min-w-[7rem] p-3 text-center bg-white rounded-md shadow-md">
-          {days}
+    <section className="h-36  w-full md:w-[45%] p-2 flex m-auto">
+      <div className="bg-cyan-800 w-[35%] flex flex-col items-center justify-center rounded-l-lg">
+        <div className="bg-slate-50 w-[70%] rounded-tr-lg rounded-tl-lg h-6 mb-0.5 text-base font-semibold grid place-items-center">
+          Days
         </div>
-        <div className="w-28 p-3 bg-slate-100 rounded-md shadow-md">Days</div>
-      </section>
-
-      <section className={`${hrs === "" ? "hidden" : "flex"} gap-2`}>
-        <div className="min-w-[7rem] p-3 text-center bg-white rounded-md shadow-md">
-          {hrs}
+        <div className="bg-slate-100 w-[70%] rounded-br-lg rounded-bl-lg h-16 grid place-items-center font-bold text-3xl">
+          00
         </div>
-        <div className="w-28 p-3 bg-slate-100 rounded-md shadow-md">Hrs</div>
-      </section>
-
-      <section className={`${mins === "" ? "hidden" : "flex"} gap-2`}>
-        <div className="min-w-[7rem] p-3 text-center bg-white rounded-md shadow-md">
-          {mins}
+      </div>
+      <div className="bg-slate-700 w-[75%] rounded-r-lg flex items-center justify-center text-whitefont-bold text-white">
+        <div className="flex text-center gap-1">
+          <div>
+            <div className="bg-slate-600 w-20 md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2">
+              00
+            </div>
+            <div className="w-20 md:w-28 max-w-full rounded-md shadow-md text-xl font-semibold">
+              Days
+            </div>
+          </div>
+          <div>
+            <div className="bg-slate-600 w-20 md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2">
+              00
+            </div>
+            <div className="w-20 md:w-28 max-w-full rounded-md shadow-md text-xl font-semibold">
+              Days
+            </div>
+          </div>
+          <div>
+            <div className="bg-slate-600 w-20 md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2">
+              00
+            </div>
+            <div className="w-20 md:w-28 max-w-full rounded-md shadow-md text-xl font-semibold">
+              Days
+            </div>
+          </div>
         </div>
-        <div className="w-28 p-3 bg-slate-100 rounded-md shadow-md">Mins</div>
-      </section>
-
-      <section className={`${secs === "" ? "hidden" : "flex"} gap-2`}>
-        <div className="min-w-[7rem] p-3 text-center bg-white rounded-md shadow-md">
-          {secs}
-        </div>
-        <div className="w-28 p-3 bg-slate-100 rounded-md shadow-md">Secs</div>
-      </section>
-    </div>
+        
+      </div>
+    </section>
   );
 }
 
