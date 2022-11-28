@@ -23,9 +23,9 @@ function SetTimer() {
   }, 1000);
 
   const addDate = () => {
-    console.log(date);
+    // console.log(date);
     let userSelectedDate = new Date(date);
-    let userTargetDate = userSelectedDate;
+    let userTargetDate = new Date(date);
     userSelectedDate.setHours(
       time ? Number.parseInt(time.toString().slice(0, 2)) : 0
     );
@@ -53,15 +53,16 @@ function SetTimer() {
   };
 
   const deleteDate = (id) => {
-    console.log(id);
+    // console.log(id);
+    dateArr.splice(dateArr.indexOf(id), 1);
+    localStorage.removeItem(id);
   };
   const editDate = (id) => {
-    let today = new Date(JSON.parse(id));
-    console.log(id, today);
-    let dd = (today.getDate() + (check ? 0 : 1)).toString().padStart(2, 0);
-    let mm = (today.getMonth() + 1).toString().padStart(2, 0);
-    let yy = today.getFullYear().toString().padStart(2, 0);
-    setDate(`${yy}-${mm}-${dd}`);
+    console.log(id);
+    let d = new Date(JSON.parse(id)).toLocaleDateString();
+    d = d.split("/").reverse().join("-");
+    console.log(d);
+    setDate(d);
   };
   useEffect(() => {
     for (let i = 0; i < localStorage.length; i++) {
