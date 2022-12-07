@@ -9,7 +9,7 @@ function SetTimer() {
   const [dateArr, setDateArr] = useState([]);
   const [time, setTime] = useState(false);
   const [check, setCheck] = useState(false);
-
+  const [updateId, setUpdateId] = useState("");
   // today date to set min attribute in input date
   let today = new Date();
   let dd = (today.getDate() + (check ? 0 : 1)).toString().padStart(2, 0);
@@ -59,11 +59,17 @@ function SetTimer() {
   };
   const editDate = (id) => {
     console.log(id);
+    setUpdateId(id);
     let d = new Date(JSON.parse(id)).toLocaleDateString();
     d = d.split("/").reverse().join("-");
     console.log(d);
     setDate(d);
   };
+
+  const updateDate = () => {
+    console.log(localStorage.setItem(updateId,));
+  };
+
   useEffect(() => {
     for (let i = 0; i < localStorage.length; i++) {
       // console.log(localStorage.key(i));
@@ -78,9 +84,16 @@ function SetTimer() {
   return (
     <div className="bg-yellow-500 min-h-[100vh] py-8 px-4">
       <form
-        className="flex flex-col justify-center md:items-center gap-5 my-5 items-start w-10/12 m-auto"
+        className="flex flex-col justify-center items-center md:items-center gap-5 my-5 w-10/12 m-auto"
         onSubmit={(e) => e.defaultPrevented()}
       >
+        <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r to-blue-700 from-purple-600">
+            Manage Your Pricious Time
+          </span>{" "}
+          Using
+        </h1>
+
         <h2 className="text-3xl font-bold">Set The Counter</h2>
         {/* Date */}
         <div className="md:flex justify-center items-center font-semibold text-2xl">
@@ -91,7 +104,7 @@ function SetTimer() {
           </label>
 
           <input
-            className="mt-2 md:mt-0 py-2 px-4 rounded-md shadow-md bg-slate-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+            className="w-56 mt-2 md:mt-0 py-2 px-4 rounded-md shadow-md bg-slate-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
             type="date"
             name=""
             id="date"
@@ -110,7 +123,7 @@ function SetTimer() {
           </label>
 
           <input
-            className="mt-2 md:mt-0 py-2 px-4 rounded-md shadow-md bg-slate-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 md:w-[49%] md:ml-1.5"
+            className="w-56 mt-2 md:mt-0 py-2 px-4 rounded-md shadow-md bg-slate-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 md:w-[49%] md:ml-1.5"
             type="text"
             name=""
             id="note"
@@ -151,7 +164,7 @@ function SetTimer() {
         </div>
 
         {/* button */}
-        <div>
+        <div className="flex flex-col gap-3">
           <button
             type="button"
             className={`${
@@ -163,6 +176,19 @@ function SetTimer() {
             disabled={date.length === 0}
           >
             Set Counter
+          </button>
+
+          <button
+            type="button"
+            className={`hidden ${
+              date.length === 0
+                ? "bg-blue-900"
+                : "from-blue-500 via-blue-600 to-blue-700"
+            } text-2xl text-white bg-gradient-to-r  hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-5 py-2.5 text-center`}
+            onClick={updateDate}
+            disabled={date.length === 0}
+          >
+            Update Counter
           </button>
         </div>
       </form>
@@ -197,15 +223,14 @@ function SetTimer() {
               </div>
             </div>
 
-            <div className="bg-slate-800 w-[75%] rounded-r-lg flex items-center justify-center text-whitefont-bold text-white flex-col">
-              <div className="-mt-2 mb-2">
-                <i className="bi-alarm mr-2 text-xl"></i>
-                <span>{JSON.parse(localStorage.getItem(date)).note}</span>
-              </div>
+            <div className="bg-slate-800 w-[75%] rounded-r-lg flex items-center justify-center text-whitefont-bold text-white flex-col relative p-2">
+              <span className="">
+                {"Target : " + JSON.parse(localStorage.getItem(date)).date}
+              </span>
               <div className="flex text-center gap-1">
                 <div>
                   <div
-                    className={`bg-slate-600 w-20 md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
+                    className={`bg-slate-600 w-[4.25rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
                       Math.floor(
                         ((date - todayDate) % (1000 * 60 * 60 * 24)) /
                           (1000 * 60 * 60)
@@ -219,13 +244,13 @@ function SetTimer() {
                       .toString()
                       .padStart(2, 0)}
                   </div>
-                  <div className="w-20 md:w-28 max-w-full rounded-md shadow-md font-semibold">
+                  <div className="w-[4.25rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
                     Hrs
                   </div>
                 </div>
                 <div>
                   <div
-                    className={`bg-slate-600 w-20 md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
+                    className={`bg-slate-600 w-[4.25rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
                       Math.floor(
                         ((date - todayDate) % (1000 * 60 * 60 * 24)) /
                           (1000 * 60 * 60)
@@ -242,13 +267,13 @@ function SetTimer() {
                       .toString()
                       .padStart(2, 0)}
                   </div>
-                  <div className="w-20 md:w-28 max-w-full rounded-md shadow-md font-semibold">
+                  <div className="w-[4.25rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
                     Mins
                   </div>
                 </div>
                 <div>
                   <div
-                    className={`bg-slate-600 w-20 md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
+                    className={`bg-slate-600 w-[4.25rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
                       Math.floor(
                         ((date - todayDate) % (1000 * 60 * 60 * 24)) /
                           (1000 * 60 * 60)
@@ -263,17 +288,19 @@ function SetTimer() {
                       .toString()
                       .padStart(2, 0)}
                   </div>
-                  <div className="w-20 md:w-28 max-w-full rounded-md shadow-md font-semibold">
+                  <div className="w-[4.25rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
                     Secs
                   </div>
                 </div>
-                <div className="flex flex-col justify-between">
+                <div className="ml-1 flex flex-col justify-between">
                   <button
                     onClick={() => {
                       deleteDate(date);
                     }}
                   >
-                    <i className="cursor-pointer rounded-full bg-slate-900 shadow-md hover:bg-slate-700 px-2 py-1 md:text-xl bi bi-trash"></i>
+                    <div className="text-orange-600 cursor-pointer rounded-full bg-slate-900 shadow-md hover:bg-slate-700 px-2 py-1 md:text-xl">
+                      <i className="bi bi-trash"></i>
+                    </div>
                   </button>
 
                   <button
@@ -281,10 +308,17 @@ function SetTimer() {
                       editDate(date);
                     }}
                   >
-                    <i className="cursor-pointer rounded-full bg-slate-900 shadow-md hover:bg-slate-700 px-2 py-1 md:text-xl bi bi-pencil-square"></i>
+                    <div className="text-blue-400 cursor-pointer rounded-full bg-slate-900 shadow-md hover:bg-slate-700 px-2 py-1 md:text-xl">
+                      <i className="bi bi-pencil-square"></i>
+                    </div>
                   </button>
                 </div>
               </div>
+              <span className="">
+                {"Msg : " + JSON.parse(localStorage.getItem(date)).note
+                  ? JSON.parse(localStorage.getItem(date)).note
+                  : ""}
+              </span>
             </div>
           </section>
         );
