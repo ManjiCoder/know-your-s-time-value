@@ -10,6 +10,7 @@ function SetTimer() {
   const [time, setTime] = useState(false);
   const [check, setCheck] = useState(false);
   const [updateId, setUpdateId] = useState("");
+  const [editBtn, setEditBtn] = useState(false);
   // today date to set min attribute in input date
   let today = new Date();
   let dd = (today.getDate() + (check ? 0 : 1)).toString().padStart(2, 0);
@@ -35,11 +36,12 @@ function SetTimer() {
     userSelectedDate.setSeconds(0);
     // console.log(userSelectedDate);
 
-    // console.log(time);
+    console.log(localStorage);
     dateArr.unshift(userSelectedDate.getTime());
     let data = {
       date: userTargetDate.toGMTString().slice(0, 17),
       note: note,
+      selectedDate: date,
     };
     localStorage.setItem(
       JSON.stringify(userSelectedDate.getTime()),
@@ -57,17 +59,25 @@ function SetTimer() {
     dateArr.splice(dateArr.indexOf(id), 1);
     localStorage.removeItem(id);
   };
+
   const editDate = (id) => {
+    let date = JSON.parse(localStorage.getItem(id));
     console.log(id);
     setUpdateId(id);
-    let d = new Date(JSON.parse(id)).toLocaleDateString();
-    d = d.split("/").reverse().join("-");
-    console.log(d);
-    setDate(d);
+    setDate(date.selectedDate.toString());
+    setNote(date.note);
+    setEditBtn(!editBtn);
   };
 
   const updateDate = () => {
-    console.log(localStorage.setItem(updateId,));
+    // console.log(dateArr.indexOf(updateId))
+    let data = JSON.parse(localStorage.getItem(updateId));
+    data.note = note;
+    // console.log(data);
+    localStorage.setItem(updateId, JSON.stringify(data));
+    setNote("");
+    setDate("");
+    setEditBtn(false);
   };
 
   useEffect(() => {
@@ -167,7 +177,7 @@ function SetTimer() {
         <div className="flex flex-col gap-3">
           <button
             type="button"
-            className={`${
+            className={`${editBtn ? "hidden" : ""} ${
               date.length === 0
                 ? "bg-blue-900"
                 : "from-blue-500 via-blue-600 to-blue-700"
@@ -180,11 +190,11 @@ function SetTimer() {
 
           <button
             type="button"
-            className={`hidden ${
+            className={` ${editBtn ? "" : "hidden"} ${
               date.length === 0
                 ? "bg-blue-900"
                 : "from-blue-500 via-blue-600 to-blue-700"
-            } text-2xl text-white bg-gradient-to-r  hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-5 py-2.5 text-center`}
+            }  text-2xl text-white bg-gradient-to-r  hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-5 py-2.5 text-center`}
             onClick={updateDate}
             disabled={date.length === 0}
           >
