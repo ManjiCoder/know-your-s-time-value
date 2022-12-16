@@ -7,7 +7,7 @@ function SetTimer() {
   const [note, setNote] = useState("");
   const [todayDate, setTodayDate] = useState("");
   const [dateArr, setDateArr] = useState([]);
-  const [time, setTime] = useState(false);
+  const [time, setTime] = useState("00:00");
   const [check, setCheck] = useState(false);
   const [updateId, setUpdateId] = useState("");
   const [editBtn, setEditBtn] = useState(false);
@@ -36,10 +36,11 @@ function SetTimer() {
     userSelectedDate.setSeconds(0);
     // console.log(userSelectedDate);
 
-    console.log(localStorage);
+    console.log(time ? time : "none");
     dateArr.unshift(userSelectedDate.getTime());
     let data = {
       date: userTargetDate.toGMTString().slice(0, 17),
+      time: time,
       note: note,
       selectedDate: date,
     };
@@ -63,6 +64,7 @@ function SetTimer() {
   const editDate = (id) => {
     let date = JSON.parse(localStorage.getItem(id));
     console.log(id);
+    console.log(time);
     setUpdateId(id);
     setDate(date.selectedDate.toString());
     setNote(date.note);
@@ -234,9 +236,21 @@ function SetTimer() {
             </div>
 
             <div className="bg-slate-800 w-[75%] rounded-r-lg flex items-center justify-center text-whitefont-bold text-white flex-col relative p-2">
-              <span className="">
-                {"Target : " + JSON.parse(localStorage.getItem(date)).date}
-              </span>
+              <div className="flex">
+                Target&nbsp;<span className="underline">Date</span>
+                {" : " + JSON.parse(localStorage.getItem(date)).date}
+                <p
+                  className={`${
+                    JSON.parse(localStorage.getItem(date)).time == "00:00"
+                      ? "hidden"
+                      : ""
+                  }`}
+                >
+                  With&nbsp;
+                  <span className="underline">Time</span>
+                  {" : " + JSON.parse(localStorage.getItem(date)).time}
+                </p>
+              </div>
               <div className="flex text-center gap-1">
                 <div>
                   <div
