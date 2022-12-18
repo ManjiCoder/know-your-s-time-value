@@ -63,8 +63,8 @@ function SetTimer() {
 
   const editDate = (id) => {
     let date = JSON.parse(localStorage.getItem(id));
-    console.log(id);
-    console.log(time);
+    // console.log(id);
+    // console.log(time);
     setUpdateId(id);
     setDate(date.selectedDate.toString());
     setNote(date.note);
@@ -236,18 +236,17 @@ function SetTimer() {
             </div>
 
             <div className="bg-slate-800 w-[75%] rounded-r-lg flex items-center justify-center text-whitefont-bold text-white flex-col relative p-2">
-              <div className="flex">
-                Target&nbsp;<span className="underline">Date</span>
+              <div className="flex text-sm">
+                <span className="font-semibold">Date</span>
                 {" : " + JSON.parse(localStorage.getItem(date)).date}
                 <p
                   className={`${
-                    JSON.parse(localStorage.getItem(date)).time == "00:00"
+                    JSON.parse(localStorage.getItem(date)).time === "00:00"
                       ? "hidden"
                       : ""
                   }`}
                 >
-                  With&nbsp;
-                  <span className="underline">Time</span>
+                  <span className="font-semibold">&nbsp;Time</span>
                   {" : " + JSON.parse(localStorage.getItem(date)).time}
                 </p>
               </div>
@@ -328,6 +327,7 @@ function SetTimer() {
                   </button>
 
                   <button
+                    className={`${editBtn ? "hidden" : ""}`}
                     onClick={() => {
                       editDate(date);
                     }}
@@ -336,11 +336,24 @@ function SetTimer() {
                       <i className="bi bi-pencil-square"></i>
                     </div>
                   </button>
+
+                  <button
+                    className={`${editBtn ? "" : "hidden"}`}
+                    onClick={() => {
+                      setEditBtn(!editBtn);
+                      setNote("");
+                      setDate("");
+                    }}
+                  >
+                    <div className="text-blue-400 cursor-pointer rounded-full bg-slate-900 shadow-md hover:bg-slate-700 px-2 py-1 md:text-xl">
+                      <i className="bi bi-arrow-counterclockwise"></i>
+                    </div>
+                  </button>
                 </div>
               </div>
               <span className="">
-                {"Msg : " + JSON.parse(localStorage.getItem(date)).note
-                  ? JSON.parse(localStorage.getItem(date)).note
+                {JSON.parse(localStorage.getItem(date)).note
+                  ? "Msg : " + JSON.parse(localStorage.getItem(date)).note
                   : ""}
               </span>
             </div>
