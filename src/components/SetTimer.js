@@ -20,11 +20,9 @@ function SetTimer() {
 
   setTimeout(() => {
     setTodayDate(new Date().getTime());
-    // setTodayDate(new Date().toGMTString())
   }, 1000);
 
   const addDate = () => {
-    // console.log(date);
     let userSelectedDate = new Date(date);
     let userTargetDate = new Date(date);
     userSelectedDate.setHours(
@@ -34,7 +32,6 @@ function SetTimer() {
       time ? Number.parseInt(time.toString().slice(-2)) : 0
     );
     userSelectedDate.setSeconds(0);
-    // console.log(userSelectedDate);
 
     console.log(time ? time : "none");
     dateArr.unshift(userSelectedDate.getTime());
@@ -48,7 +45,6 @@ function SetTimer() {
       JSON.stringify(userSelectedDate.getTime()),
       JSON.stringify(data)
     );
-    // console.log(dateArr);
     setDate("");
     setTime(false);
     setNote("");
@@ -63,8 +59,11 @@ function SetTimer() {
 
   const editDate = (id) => {
     let date = JSON.parse(localStorage.getItem(id));
-    // console.log(id);
-    // console.log(time);
+    let elemt = document.getElementById(String(id));
+    let btn1 = elemt.lastElementChild.childNodes[1].lastChild.childNodes[1];
+    let btn2 = elemt.lastElementChild.childNodes[1].lastChild.childNodes[2];
+    btn1.classList.toggle("hidden");
+    btn2.classList.toggle("hidden");
     setUpdateId(id);
     setDate(date.selectedDate.toString());
     setNote(date.note);
@@ -72,10 +71,8 @@ function SetTimer() {
   };
 
   const updateDate = () => {
-    // console.log(dateArr.indexOf(updateId))
     let data = JSON.parse(localStorage.getItem(updateId));
     data.note = note;
-    // console.log(data);
     localStorage.setItem(updateId, JSON.stringify(data));
     setNote("");
     setDate("");
@@ -84,12 +81,9 @@ function SetTimer() {
 
   useEffect(() => {
     for (let i = 0; i < localStorage.length; i++) {
-      // console.log(localStorage.key(i));
       dateArr.unshift(localStorage.key(JSON.parse(i)));
     }
     setDateArr(Array.from(new Set(dateArr.sort((a, b) => a - b))));
-    // console.log(dateArr);
-    // console.log(localStorage);
     // eslint-disable-next-line
   }, []);
 
@@ -208,156 +202,164 @@ function SetTimer() {
       {/* Show Timer */}
       {dateArr.map((date, index) => {
         return (
-          <section
-            id={date}
-            key={index}
-            className={`h-36 md:h-44  w-full md:max-w-xl lg:max-w-2xl p-2 flex m-auto ${
-              Math.sign(Math.floor(date - todayDate)) === -1 ? "hidden" : ""
-            }`}
-          >
-            <div className="bg-cyan-800 w-[35%] flex flex-col items-center justify-center rounded-l-lg">
-              <div className="text-xs md:text-xl font-bold mb-1 text-white">
-                {JSON.parse(localStorage.getItem(date)).date}
-              </div>
-              <div className="bg-slate-50 w-[70%] rounded-tr-lg rounded-tl-lg h-6 mb-0.5 text-base font-bold grid place-items-center">
-                Days
-              </div>
-              <div
-                className={`bg-slate-100 w-[70%] rounded-br-lg rounded-bl-lg h-16 grid place-items-center font-bold text-4xl ${
-                  Math.floor(
-                    (date - todayDate) / (1000 * 60 * 60 * 24)
-                  ).toString() < 1 && "text-red-700"
-                }`}
-              >
-                {Math.floor((date - todayDate) / (1000 * 60 * 60 * 24))
-                  .toString()
-                  .padStart(2, 0)}
-              </div>
-            </div>
-
-            <div className="bg-slate-800 w-[75%] rounded-r-lg flex items-center justify-center text-whitefont-bold text-white flex-col relative p-2">
-              <div className="flex text-sm">
-                <span className="font-semibold">Date</span>
-                {" : " + JSON.parse(localStorage.getItem(date)).date}
-                <p
-                  className={`${
-                    JSON.parse(localStorage.getItem(date)).time === "00:00"
-                      ? "hidden"
-                      : ""
+          Math.sign(parseInt(date) - todayDate) === 1 && (
+            <section
+              id={date}
+              key={index}
+              className="h-36 md:h-44 w-full md:max-w-xl lg:max-w-2xl p-2 flex m-auto"
+            >
+              <div className="bg-cyan-800 w-[35%] flex flex-col items-center justify-center rounded-l-lg">
+                <div className="text-xs md:text-xl font-bold mb-1 text-white">
+                  {JSON.parse(localStorage.getItem(date)).date}
+                </div>
+                <div className="bg-slate-50 w-[70%] rounded-tr-lg rounded-tl-lg h-6 mb-0.5 text-base font-bold grid place-items-center">
+                  Days
+                </div>
+                <div
+                  className={`bg-slate-100 w-[70%] rounded-br-lg rounded-bl-lg h-16 grid place-items-center font-bold text-4xl ${
+                    Math.floor(
+                      (date - todayDate) / (1000 * 60 * 60 * 24)
+                    ).toString() < 1 && "text-red-700"
                   }`}
                 >
-                  <span className="font-semibold">&nbsp;Time</span>
-                  {" : " + JSON.parse(localStorage.getItem(date)).time}
+                  {Math.floor((date - todayDate) / (1000 * 60 * 60 * 24))
+                    .toString()
+                    .padStart(2, 0)}
+                </div>
+              </div>
+
+              <div className="bg-slate-800 w-[75%] rounded-r-lg flex items-center justify-center text-whitefont-bold text-white flex-col relative p-2">
+                <div className="flex text-sm md:text-base md:pb-2">
+                  <p>
+                    <span className="font-semibold">Date&nbsp;</span>
+                    {": " + JSON.parse(localStorage.getItem(date)).date}
+                  </p>
+                  <p
+                    className={`${
+                      JSON.parse(localStorage.getItem(date)).time === "00:00"
+                        ? "hidden"
+                        : ""
+                    }`}
+                  >
+                    <span className="font-semibold">&nbsp;Time</span>
+                    {" : " + JSON.parse(localStorage.getItem(date)).time}
+                  </p>
+                </div>
+                <div className="flex text-center gap-1">
+                  <div>
+                    <div
+                      className={`bg-slate-600 w-[4.25rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
+                        Math.floor(
+                          (date - todayDate) / (1000 * 60 * 60 * 24)
+                        ).toString() < 1 &&
+                        Math.floor(
+                          ((date - todayDate) % (1000 * 60 * 60 * 24)) /
+                            (1000 * 60 * 60)
+                        ) < 1 &&
+                        "text-orange-600"
+                      }`}
+                    >
+                      {Math.floor(
+                        ((date - todayDate) % (1000 * 60 * 60 * 24)) /
+                          (1000 * 60 * 60)
+                      )
+                        .toString()
+                        .padStart(2, 0)}
+                    </div>
+                    <div className="w-[4.25rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
+                      Hrs
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      className={`bg-slate-600 w-[4.25rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
+                        Math.floor(
+                          ((date - todayDate) % (1000 * 60 * 60 * 24)) /
+                            (1000 * 60 * 60)
+                        ) < 1 &&
+                        Math.floor(
+                          ((date - todayDate) % (1000 * 60 * 60)) / (1000 * 60)
+                        ) < 1 &&
+                        "text-orange-600"
+                      }`}
+                    >
+                      {Math.floor(
+                        ((date - todayDate) % (1000 * 60 * 60)) / (1000 * 60)
+                      )
+                        .toString()
+                        .padStart(2, 0)}
+                    </div>
+                    <div className="w-[4.25rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
+                      Mins
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      className={`bg-slate-600 w-[4.25rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
+                        Math.floor(
+                          ((date - todayDate) % (1000 * 60 * 60 * 24)) /
+                            (1000 * 60 * 60)
+                        ) < 1 &&
+                        Math.floor(
+                          ((date - todayDate) % (1000 * 60 * 60)) / (1000 * 60)
+                        ) < 1 &&
+                        "text-orange-600"
+                      }`}
+                    >
+                      {Math.floor(((date - todayDate) % (1000 * 60)) / 1000)
+                        .toString()
+                        .padStart(2, 0)}
+                    </div>
+                    <div className="w-[4.25rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
+                      Secs
+                    </div>
+                  </div>
+                  <div className="ml-1 flex flex-col justify-between">
+                    {/* Delete-Btn */}
+                    <button
+                      onClick={() => {
+                        deleteDate(date);
+                      }}
+                    >
+                      <div className="text-orange-600 cursor-pointer rounded-full bg-slate-900 shadow-md hover:bg-slate-700 px-2 py-1 md:text-xl">
+                        <i className="bi bi-trash"></i>
+                      </div>
+                    </button>
+
+                    {/* Edit-Btn */}
+                    <button
+                      className=""
+                      onClick={() => {
+                        editDate(date);
+                      }}
+                    >
+                      <div className="text-blue-400 cursor-pointer rounded-full bg-slate-900 shadow-md hover:bg-slate-700 px-2 py-1 md:text-xl">
+                        <i className="bi bi-pencil-square"></i>
+                      </div>
+                    </button>
+
+                    {/* Undo-Btn */}
+                    <button
+                      className="hidden"
+                      onClick={() => {
+                        editDate(date);
+                        setNote("");
+                        setDate("");
+                      }}
+                    >
+                      <div className="text-blue-400 cursor-pointer rounded-full bg-slate-900 shadow-md hover:bg-slate-700 px-2 py-1 md:text-xl">
+                        <i className="bi bi-arrow-counterclockwise"></i>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+                <p className="md:pt-2">
+                  <span className="font-semibold">Msg : </span>
+                  {JSON.parse(localStorage.getItem(date)).note}
                 </p>
               </div>
-              <div className="flex text-center gap-1">
-                <div>
-                  <div
-                    className={`bg-slate-600 w-[4.25rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
-                      Math.floor(
-                        ((date - todayDate) % (1000 * 60 * 60 * 24)) /
-                          (1000 * 60 * 60)
-                      ) < 1 && "text-orange-600"
-                    }`}
-                  >
-                    {Math.floor(
-                      ((date - todayDate) % (1000 * 60 * 60 * 24)) /
-                        (1000 * 60 * 60)
-                    )
-                      .toString()
-                      .padStart(2, 0)}
-                  </div>
-                  <div className="w-[4.25rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
-                    Hrs
-                  </div>
-                </div>
-                <div>
-                  <div
-                    className={`bg-slate-600 w-[4.25rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
-                      Math.floor(
-                        ((date - todayDate) % (1000 * 60 * 60 * 24)) /
-                          (1000 * 60 * 60)
-                      ) < 1 &&
-                      Math.floor(
-                        ((date - todayDate) % (1000 * 60 * 60)) / (1000 * 60)
-                      ) < 1 &&
-                      "text-orange-600"
-                    }`}
-                  >
-                    {Math.floor(
-                      ((date - todayDate) % (1000 * 60 * 60)) / (1000 * 60)
-                    )
-                      .toString()
-                      .padStart(2, 0)}
-                  </div>
-                  <div className="w-[4.25rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
-                    Mins
-                  </div>
-                </div>
-                <div>
-                  <div
-                    className={`bg-slate-600 w-[4.25rem] md:w-28 max-w-full text-center rounded-md shadow-md text-xl font-bold py-3 px-2 ${
-                      Math.floor(
-                        ((date - todayDate) % (1000 * 60 * 60 * 24)) /
-                          (1000 * 60 * 60)
-                      ) < 1 &&
-                      Math.floor(
-                        ((date - todayDate) % (1000 * 60 * 60)) / (1000 * 60)
-                      ) < 1 &&
-                      "text-orange-600"
-                    }`}
-                  >
-                    {Math.floor(((date - todayDate) % (1000 * 60)) / 1000)
-                      .toString()
-                      .padStart(2, 0)}
-                  </div>
-                  <div className="w-[4.25rem] md:w-28 max-w-full rounded-md shadow-md font-semibold">
-                    Secs
-                  </div>
-                </div>
-                <div className="ml-1 flex flex-col justify-between">
-                  <button
-                    onClick={() => {
-                      deleteDate(date);
-                    }}
-                  >
-                    <div className="text-orange-600 cursor-pointer rounded-full bg-slate-900 shadow-md hover:bg-slate-700 px-2 py-1 md:text-xl">
-                      <i className="bi bi-trash"></i>
-                    </div>
-                  </button>
-
-                  <button
-                    className={`${editBtn ? "hidden" : ""}`}
-                    onClick={() => {
-                      editDate(date);
-                    }}
-                  >
-                    <div className="text-blue-400 cursor-pointer rounded-full bg-slate-900 shadow-md hover:bg-slate-700 px-2 py-1 md:text-xl">
-                      <i className="bi bi-pencil-square"></i>
-                    </div>
-                  </button>
-
-                  <button
-                    className={`${editBtn ? "" : "hidden"}`}
-                    onClick={() => {
-                      setEditBtn(!editBtn);
-                      setNote("");
-                      setDate("");
-                    }}
-                  >
-                    <div className="text-blue-400 cursor-pointer rounded-full bg-slate-900 shadow-md hover:bg-slate-700 px-2 py-1 md:text-xl">
-                      <i className="bi bi-arrow-counterclockwise"></i>
-                    </div>
-                  </button>
-                </div>
-              </div>
-              <span className="">
-                {JSON.parse(localStorage.getItem(date)).note
-                  ? "Msg : " + JSON.parse(localStorage.getItem(date)).note
-                  : ""}
-              </span>
-            </div>
-          </section>
+            </section>
+          )
         );
       })}
       {/* <ShowTimer /> */}
